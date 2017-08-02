@@ -20,8 +20,13 @@ class ViewController: UIViewController {
     var letterButtons = [UIButton]()
     var activatedButtons = [UIButton]()
     var solutions = [String]()
-    var score = 0
+    var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
     var level = 1
+    
     
     
     override func viewDidLoad() {
@@ -38,7 +43,7 @@ class ViewController: UIViewController {
         }
         loadLevel()
     }
-   
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -67,7 +72,20 @@ class ViewController: UIViewController {
                 ac.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
                 present(ac, animated: true)
             }
+        } else {
+            currentAnswer.text = ""
+            for btn in activatedButtons {
+                btn.isHidden = false
+            }
+            activatedButtons.removeAll()
+            score -= 1
+            if score < 0 {
+                score = 0
+            }
             
+            let ac = UIAlertController(title: "Wrong!", message: "Try another combonation", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            present(ac, animated: true)
             
         }
     }
